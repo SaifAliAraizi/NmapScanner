@@ -28,12 +28,12 @@ export default function Login() {
         password
       }, {
         headers: {
-          'X-CSRFToken': csrfToken,
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          'X-CSRFToken': csrfToken
         }
       });
 
       if (response.data.access) {
+        // Store the access token in localStorage
         localStorage.setItem("accessToken", response.data.access);
 
         // Check for intended scan
@@ -52,6 +52,7 @@ export default function Login() {
       setError(msg);
     }
   };
+
 
   const handleSignUpRedirect = () => {
     navigate("/signup");
