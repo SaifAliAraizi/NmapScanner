@@ -1,0 +1,124 @@
+/* Footer Styling */
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  background-color: #0D0D0D;
+  padding: 7px 10px;
+  color: #00FF00;
+  font-family: 'IBM Plex Mono', monospace;
+  border-top: 3px solid #00FF00;
+  margin-bottom: 0;
+
+  /* Background image settings */
+  background-image: url('../../assets/bg3.jpg'); /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* Footer Logo */
+.footer-photo-container {
+  text-align: center;
+}
+
+.footer-photo {
+  width: 250px;
+  height: auto;
+}
+
+/* Footer Sections */
+.grid-item-nav,
+.grid-item-contact,
+.grid-item-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  min-width: 200px;
+}
+
+.footer-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #FFE9D4;
+}
+
+/* Footer Links */
+.footer-links {
+  color: #00FF00;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease-in-out;
+}
+
+.footer-links:hover {
+  color: #FFE9D4;
+  text-decoration: underline;
+}
+
+/* Contact Links */
+.contact-links {
+  color: #FFE9D4;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease-in-out;
+}
+
+.contact-links:hover {
+  color: #00FF00;
+}
+
+/* Social Links */
+.social-links {
+  font-size: 18px;
+  color: #00FF00;
+  transition: color 0.3s ease-in-out;
+}
+
+.social-links:hover {
+  color: #FFE9D4;
+}
+
+/* Footer Copyright */
+.copyright {
+  text-align: center;
+  padding: 10px 0;
+  background-color: #0D0D0D;
+  color: #FFE9D4;
+  font-size: 14px;
+  border-top: 2px solid #00FF00;
+  margin-top: 0;
+}
+
+/* LinkedIn Copyright Link */
+.linkedin-link {
+  color: #00FF00;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.linkedin-link:hover {
+  color: #FFE9D4;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 50px 0px;
+  }
+
+  .grid-item-nav,
+  .grid-item-contact,
+  .grid-item-socials {
+    align-items: center;
+    text-align: center;
+  }
+}

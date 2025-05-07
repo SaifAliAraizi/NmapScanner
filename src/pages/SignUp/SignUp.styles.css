@@ -1,0 +1,143 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* General Page Styling */
+.signup-page {
+  min-height: 100vh; /* or height: 100vh; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* vertically center content */
+  width: 100%;
+  background-color: #0D0D0D;
+  color: #FFE9D4;
+  font-family: 'IBM Plex Mono', monospace;
+
+  background-image: url('../../assets/bg5.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* Sign Up Section Grid */
+.signup-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+  margin: auto; /* centers horizontally */
+  padding: 10px;
+}
+
+
+/* Form Styling */
+.signup-form {
+  background: #1A1A1A;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  height: 400px;
+  /* box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Headings */
+.signup-form h2 {
+  color: #00FF00;
+  margin-bottom: 10px;
+}
+
+/* Input Group */
+.input-group {
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+/* Label Styling */
+.input-group label {
+  display: block;
+  font-size: 14px;
+  color: #FFE9D4;
+  margin-bottom: 5px;
+}
+
+/* Input Fields */
+.signup-form .form-control {
+  background: #262626;
+  color: #FFE9D4;
+  border: 1px solid #00FF00;
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+}
+
+.signup-form .form-control:focus {
+  border-color: #F0DAFF;
+  box-shadow: 0 0 5px #F0DAFF;
+}
+
+/* Checkbox */
+.checkbox-container {
+  margin-bottom: 20px;
+}
+
+.signup-form .form-check-input {
+  background-color: #262626;
+  border: 1px solid #00FF00;
+}
+
+/* Submit Button */
+.signup-form .btn {
+  background-color: #00FF00 !important;
+  color: #0D0D0D !important;
+  font-weight: bold;
+  border-radius: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.signup-form .btn:hover {
+  background-color: purple !important;
+  color: #0D0D0D !important;
+  cursor: pointer;
+}
+
+/* Right Side Image */
+.signup-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-image img {
+  width: 89.5%;
+  height: 450px;
+  object-fit: contain;
+  /* Prevents stretching */
+  border-radius: 10px;
+  /* box-shadow: 0 0 10px rgba(255, 233, 212, 0.3); */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signup-section {
+    grid-template-columns: 1fr;
+    /* Stack in small screens */
+    text-align: center;
+  }
+
+  .signup-image {
+    display: none;
+    /* Hide image on mobile */
+  }
+}

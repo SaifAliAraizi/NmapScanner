@@ -1,0 +1,153 @@
+/* Hero Section */
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns: Text (Left) and Image (Right) */
+    align-items: center;
+    background-color: #0D0D0D;
+    color: #00FF00;
+    width: 100%;
+    max-width: 100%;
+    height: 70vh;
+    box-sizing: border-box;
+    padding: 0px 80px; /* Adds spacing on both sides */
+    z-index: 100;
+    border-bottom: 3px solid #00FF00;
+
+    /* Background image settings */
+    background-image: url('../../assets/bg3.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(13, 13, 13, 0.7); /* Transparent dark layer */
+    z-index: 0;
+}
+
+/* Make sure hero content stays above the overlay */
+.hero-content,
+.hero-image {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero Text Section */
+.hero-content {
+    max-width: 90%;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 10px;
+    margin-top: -18px;
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+    color: #EDEFEE;
+    margin-bottom: 20px;
+}
+
+/* Scan Section */
+.scan-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.scan-section input {
+    padding: 16px;
+    font-size: 0.8rem;
+    border: 2px solid #00FF00;
+    background: transparent;
+    color: #00FF00;
+    border-radius: 10px;
+    width: 250px;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.scan-section select {
+    padding: 10px;
+    font-size: 1.5rem;
+    background: #0D0D0D;
+    color: #00FF00;
+    border: 2px solid #00FF00;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.scan-button {
+    padding: 13px;
+    font-size: 1.5rem;
+    background: #00FF00;
+    color: #0D0D0D;
+    border-radius: 10px;
+    display: inline-flex; /* Use inline-flex for buttons */
+    align-items: center;  /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
+    cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: 0.3s;
+    white-space: nowrap; /* Prevent line breaks */
+}
+
+.scan-button:hover {
+    background: purple;
+    color: #EDEFEE;
+}
+
+/* Hero Image Section */
+.hero-image {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    perspective: 1000px; /* Adds depth for 3D effect */
+    position: relative;
+}
+
+/* Image Styling with Floating 3D Animation */
+.hero-image img {
+    width: 100%;
+    height: 400px;
+    border-radius: 10px;
+    object-fit: cover;
+    backface-visibility: hidden;
+    box-shadow: 0 20px 30px #6a6a6a33;
+    transition: transform 0.1s ease;
+}
+
+.hero-image img:hover {
+    animation: float3D 5s ease-in-out infinite;
+    transform-style: preserve-3d;
+}
+
+/* 3D Floating Animation */
+@keyframes float3D {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) scale(1);
+    }
+    25% {
+        transform: rotateX(200deg) rotateY(200deg) scale(1.03);
+    }
+    50% {
+        transform: rotateX(0deg) rotateY(0deg) scale(1);
+    }
+    75% {
+        transform: rotateX(0deg) rotateY(0deg) scale(1.03);
+    }
+    100% {
+        transform: rotateX(0deg) rotateY(0deg) scale(1);
+    }
+}

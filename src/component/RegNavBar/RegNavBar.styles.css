@@ -1,0 +1,107 @@
+/* Navbar - Fixed at the top */
+.nav-header {
+    width: 100%;
+    background-color: #0D0D0D;
+    transition: transform 0.3s ease-in-out;
+    z-index: 100;
+    border-bottom: 3px solid #00FF00;
+}
+
+/* Hide navbar when scrolling down */
+.hidden {
+    transform: translateY(-100%);
+}
+
+/* Navbar Container */
+.nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+/* Logo */
+.logo img {
+    width: 80px;
+    height: 50px;
+    padding-left: 40px;
+    padding-right: 150px;
+    object-fit: contain;
+}
+
+/* Desktop Nav Links */
+.nav-links-container {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    padding-right: 80px;
+}
+
+.nav-links {
+    text-decoration: none;
+    font-size: 20px;
+    text-align: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    color: #00FF00;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-links:hover {
+    color: #FFE9D4;
+    text-decoration: underline;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    cursor: pointer;
+}
+
+.hamburger-on {
+    color: #00FF00;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 100vh;
+    background: rgba(13, 13, 13, 0.95);
+    box-shadow: -5px 0 10px rgba(0, 255, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    transform: translateX(110%);
+    /* Move further to prevent hidden width */
+    transition: transform 0.3s ease-in-out;
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.close-icon {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #FFE9D4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links-container {
+        display: none;
+    }
+
+    .hamburger {
+        display: block;
+    }
+}

@@ -1,0 +1,138 @@
+/* ABOUT SECTION */
+.about {
+  padding: 1rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  place-items: center;
+  text-align: center;
+  background-color: #1A1A1A;
+  height: 600px;
+
+  /* Background image settings */
+  background-image: url('../../assets/bg4.jpg'); /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* TITLES */
+.about-title {
+  margin-top: -25px;
+  font-weight: 700;
+  font-size: 40px;
+  color: #00FF00;
+}
+
+.about-subtitle {
+  font-size: 28px;
+  margin-bottom: 2rem;
+  color: #F0DAFF;
+}
+
+/* TEXT */
+.about-text {
+  font-size: 20px;
+  color: #EDEFEE;;
+  font-family: 'Karla', sans-serif;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+/* IMAGE CONTAINER */
+.about-image-container {
+  width: 250px;
+  height: 250px;
+  position: relative;
+}
+
+.about-container-one,
+.about-container-two {
+  position: absolute;
+  width: 150px;
+}
+
+.about-container-one {
+  top: 0;
+  right: 0;
+}
+
+.about-container-two {
+  bottom: 0;
+  left: 0;
+}
+
+.about-image-one,
+.about-image-two {
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* RESPONSIVE DESIGN */
+@media (min-width: 1024px) {
+  .about {
+    padding: 0.5rem;
+  }
+
+  .about-image-container {
+    width: 500px;
+    height: 500px;
+  }
+
+  .about-container-one,
+  .about-container-two {
+    width: 250px;
+  }
+
+  .about-image-one,
+  .about-image-two {
+    height: 350px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .about {
+    padding: 4rem 12rem;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: left;
+    align-items: center;
+    gap: 80px;
+  }
+
+  .about-text {
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding: 2rem;
+  }
+
+  .about-title {
+    font-size: 44px;
+  }
+
+  .about-subtitle {
+    font-size: 35px;
+  }
+
+  .about-text {
+    font-size: 20px;
+  }
+
+  .about-image-container {
+    width: 350px;
+    height: 350px;
+    display: none;
+  }
+
+  .about-container-one,
+  .about-container-two {
+    width: 180px;
+  }
+}
