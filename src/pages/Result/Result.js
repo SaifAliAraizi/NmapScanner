@@ -1,7 +1,5 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { EventSourcePolyfill } from 'event-source-polyfill';
 import "./Result.styles.css";
 import NavBar from "../../component/NavBar/NavBar";
 import Footer from "../../component/Footer/Footer";
@@ -17,157 +15,95 @@ const Result = () => {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [scanStatus, setScanStatus] = useState("initializing");
-  const eventSourceRef = useRef(null);
   const outputEndRef = useRef(null);
+  const [scanId, setScanId] = useState(null);
+  const pollIntervalRef = useRef(null);
 
-  // Auto-scroll to bottom of output
   useEffect(() => {
     outputEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [scanOutput]);
 
   useEffect(() => {
-    const scanId = new URLSearchParams(location.search).get("scan_id");
-    if (!scanId) {
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get("scan_id");
+    setScanId(id);
+
+    if (!id) {
       setScanOutput("Error: Missing scan ID.");
       setLoading(false);
+      setScanStatus("error");
       return;
     }
 
-    const fetchInitialData = async () => {
+    const fetchScanResults = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/scan-result/${scanId}/`);
-
-        setIp(response.data.ip || "Unknown");
-        setScanType(response.data.scan_type || "Unknown");
-
-        if (response.data.status === "completed") {
-          handleCompletedScan(response.data);
-        } else {
-          if (response.data.output) {
-            setScanOutput(response.data.output);
-            updateProgress(response.data.output);
-          }
-          startSSEConnection(scanId);
-        }
-      } catch (error) {
-        console.error("Initial fetch error:", error);
-        setScanOutput(prev => prev + "\nError: Failed to connect to scan service.");
-        setLoading(false);
-        setScanStatus("error");
-      }
-    };
-
-    const updateProgress = (output) => {
-      if (output.includes("Nmap done")) {
-        setProgress(100);
-        setScanStatus("completed");
-      } else if (output.includes("Service scan")) {
-        setProgress(80);
-        setScanStatus("service-detection");
-      } else if (output.includes("Connect Scan Timing")) {
-        setProgress(60);
-        setScanStatus("port-scanning");
-      } else if (output.includes("Initiating")) {
-        setProgress(30);
-        setScanStatus("scanning");
-      }
-    };
-
-    const startSSEConnection = (scanId) => {
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close();
-      }
-
-      const eventSource = new EventSourcePolyfill(
-        `http://localhost:8000/api/scan-result/${scanId}/`,
-        {
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get(`http://localhost:8000/api/scan-result/${id}/`, {
           headers: {
-            'Accept': 'text/event-stream',
-            'Cache-Control': 'no-cache',
-            'X-Requested-With': 'XMLHttpRequest',
-          },
-          withCredentials: false,
-          heartbeatTimeout: 60000,
-          retryInterval: 5000
-        }
-      );
-
-      eventSourceRef.current = eventSource;
-
-      eventSource.onopen = () => {
-        console.log("SSE connection established");
-        setScanStatus("connected");
-        setScanOutput(prev => prev + "\nConnected to scan service...");
-      };
-
-      eventSource.onmessage = (event) => {
-        const newData = event.data.trim();
-        if (!newData) return;
-
-        setScanOutput(prev => {
-          const updatedOutput = prev + newData + '\n';
-          updateProgress(updatedOutput);
-          return updatedOutput;
-        });
-      };
-
-      eventSource.addEventListener('complete', (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          if (data.status === "completed") {
-            eventSource.close();
-            setProgress(100);
-            setScanStatus("completed");
-            fetchFinalResult(scanId);
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
           }
-        } catch (e) {
-          console.error("Error parsing complete event:", e);
-        }
-      });
+        });
 
-      eventSource.onerror = (error) => {
-        console.error("SSE error:", error);
-        setScanStatus("error");
-        if (eventSource.readyState === EventSourcePolyfill.CLOSED) {
-          setScanOutput(prev => prev + "\nConnection lost. Reconnecting...");
-          setTimeout(() => fetchInitialData(), 2000);
-        }
-      };
-    };
+        const data = response.data;
+        console.log("Scan data:", data);
 
-    const fetchFinalResult = async (scanId) => {
-      try {
-        const response = await axios.get(`http://localhost:8000/api/scan-result/${scanId}/`);
-        handleCompletedScan(response.data);
+        setIp(data.ip || "Unknown");
+        setScanType(data.scan_type || "Unknown");
+
+        if (data.output) {
+          setScanOutput(data.output);
+          updateProgress(data.output);
+        }
+
+        if (data.status === "completed") {
+          setLoading(false);
+          setProgress(100);
+          setScanStatus("completed");
+          setXmlFile(data.xml_file);
+          setHtmlFile(data.html_file);
+          clearInterval(pollIntervalRef.current);
+        }
       } catch (error) {
-        console.error("Final fetch error:", error);
-        setScanOutput(prev => prev + "\nFailed to load final results.");
-        setLoading(false);
+        console.error("Error fetching scan results:", error);
+        if (error.response?.status === 401) {
+          setScanOutput(prev => prev + "\nSession expired. Please log in again.");
+          setScanStatus("error");
+          clearInterval(pollIntervalRef.current);
+        }
       }
     };
 
-    const handleCompletedScan = (data) => {
-      setScanOutput(data.output || "Scan completed with no output");
-      setXmlFile(data.xml_file);
-      setHtmlFile(data.html_file);
-      setLoading(false);
-      setProgress(100);
-      setScanStatus("completed");
-    };
+    // Initial fetch
+    fetchScanResults();
 
-    fetchInitialData();
+    // Set up polling every 2 seconds
+    pollIntervalRef.current = setInterval(fetchScanResults, 2000);
 
     return () => {
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close();
-      }
+      clearInterval(pollIntervalRef.current);
     };
   }, [location.search]);
+
+  const updateProgress = (output) => {
+    if (output.includes("Nmap done")) {
+      setProgress(100);
+      setScanStatus("completed");
+    } else if (output.includes("Service scan")) {
+      setProgress(80);
+      setScanStatus("service-detection");
+    } else if (output.includes("Connect Scan Timing")) {
+      setProgress(60);
+      setScanStatus("port-scanning");
+    } else if (output.includes("Initiating")) {
+      setProgress(30);
+      setScanStatus("scanning");
+    }
+  };
 
   const getStatusMessage = () => {
     switch (scanStatus) {
       case "initializing": return "Initializing scan...";
-      case "connected": return "Connected to scan service";
       case "scanning": return "Scanning target...";
       case "port-scanning": return "Scanning ports...";
       case "service-detection": return "Detecting services...";
